@@ -1,4 +1,5 @@
 from django.db import models 
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Exercise(models.Model):
@@ -12,13 +13,19 @@ class Exercise(models.Model):
     def __str__(self):
         return self.name
 
-# WorkoutSession = 
+# WorkoutSession
 class WorkoutSession(models.Model):
     # Date of the workout session
     date = models.DateField()
 
     # Optional notes for that workout
     notes = models.TextField(blank=True)
+
+    # Completed > 
+    completed = models.BooleanField(default=False)
+
+    # xp_gained > 
+    xp_gained = models.IntegerField(default=0)
 
     # Display format in admin panel
     def __str__(self):
@@ -61,4 +68,15 @@ class SetEntry(models.Model):
         set_part = f"Set {self.set_number} " if self.set_number is not None else ""
         return f"{set_part}{self.exercise.name}: {self.weight} x {self.reps}"
 
+# Profile class = One to one relationship with player/client
+# When we go and update the Workout completes, XP gained, You increase level if XP threshold is hit, & more we update the Profile model
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    xp = models.IntegerField(default=0)
+    level = models.IntegerField(default=1)
+    workouts_completed = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.user.username} - Lvl {self.level} ({self.xp} XP)"
 
