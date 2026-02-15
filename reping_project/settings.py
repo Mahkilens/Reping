@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'workouts', # This tells Django, hey, this app exist
+    'workouts.apps.WorkoutsConfig',
 ]
 
 MIDDLEWARE = [
