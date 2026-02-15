@@ -21,9 +21,11 @@ Models Registered:
 """
 
 from django.contrib import admin
-from .models import Exercise, WorkoutSession, SetEntry
+from .models import Exercise, WorkoutSession, SetEntry, Profile
+
 
 # Register your models here.
 admin.site.register(Exercise)
 admin.site.register(WorkoutSession)
 admin.site.register(SetEntry)
+admin.site.register(Profile)
