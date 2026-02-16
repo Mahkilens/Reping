@@ -13,6 +13,10 @@ class Exercise(models.Model):
     def __str__(self):
         return self.name
 
+
+    def __str__(self):
+        return f"{self.user.username} - Lvl {self.level} ({self.xp} XP)"
+
 # WorkoutSession
 class WorkoutSession(models.Model):
     # Date of the workout session
@@ -26,6 +30,11 @@ class WorkoutSession(models.Model):
 
     # xp_gained > 
     xp_gained = models.IntegerField(default=0)
+
+    profile = models.ForeignKey(
+        "Profile", 
+        on_delete=models.CASCADE, 
+        related_name="sessions",)
 
     # Display format in admin panel
     def __str__(self):
@@ -77,6 +86,4 @@ class Profile(models.Model):
     level = models.IntegerField(default=1)
     workouts_completed = models.IntegerField(default=0)
 
-    def __str__(self):
-        return f"{self.user.username} - Lvl {self.level} ({self.xp} XP)"
 
