@@ -86,4 +86,18 @@ class Profile(models.Model):
     level = models.IntegerField(default=1)
     workouts_completed = models.IntegerField(default=0)
 
+class Gym(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class CheckIn(models.Model):
+    # It's commonly used in models for tracking creation and modification timestamps.
+    timestamp = models.DateTimeField(auto_now_add=True)
+    profile = models.ForeignKey("Profile", on_delete=models.CASCADE, related_name="checkins")
+    gym = models.ForeignKey(Gym, on_delete=models.CASCADE, related_name="checkins")
+
+    def __str__(self):
+        return f"{self.profile.user.username} @ {self.gym.name} ({self.timestamp}"
 
