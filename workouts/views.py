@@ -43,6 +43,50 @@ def home(request):
 
 
 @login_required
+def logs(request):
+    return render(request, "workouts/logs.html")
+
+
+@login_required
+def exercises(request):
+    return render(request, "workouts/exercises.html")
+
+
+@login_required
+def progress(request):
+    return render(request, "workouts/progress.html")
+
+
+@login_required
+def settings(request):
+    return render(request, "workouts/settings.html")
+
+
+@login_required
+def nutrition(request):
+    return render(request, "workouts/nutrition.html")
+
+
+@login_required
+def hydration(request):
+    return render(request, "workouts/hydration.html")
+
+
+@login_required
+def streak(request):
+    return render(request, "workouts/streak.html")
+
+
+@login_required
+def analytics(request):
+    return render(request, "workouts/analytics.html")
+
+@login_required
+def leaderboard(request):
+    return render(request, "workouts/leaderboard.html")
+
+
+@login_required
 def checkin_create(request):
     if request.method != "POST":
         return redirect("dashboard")
