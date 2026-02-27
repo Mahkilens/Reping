@@ -2,6 +2,8 @@ from datetime import date, timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.utils import timezone
 
 from .models import Profile, Gym, CheckIn
 
@@ -26,6 +28,9 @@ def dashboard(request):
         timestamp__date__lte=today
     ).count()
 
+    xp_next_level = profile.level * 100
+    xp_progress_percent = min(int((profile.xp / xp_next_level) * 100), 100) if xp_next_level else 0
+
     return render(
         request,
         "workouts/dashboard.html",
@@ -34,6 +39,8 @@ def dashboard(request):
             "recent_sessions": recent_sessions,
             "today_checkins_count": today_checkins_count,
             "week_checkins_count": week_checkins_count,
+            "xp_next_level": xp_next_level,
+            "xp_progress_percent": xp_progress_percent,
         }
     )
 
@@ -85,8 +92,7 @@ def analytics(request):
 def leaderboard(request):
     return render(request, "workouts/leaderboard.html")
 
-
-@login_required
+@login_required 
 def checkin_create(request):
     if request.method != "POST":
         return redirect("dashboard")
@@ -97,5 +103,42 @@ def checkin_create(request):
     if gym is None:
         return redirect("dashboard")
 
+    # Check in once per day (guard)
+    today = timezone.localdate()
+    already_checked_in = CheckIn.objects.filter(
+        profile=profile,
+        timestamp__date=today
+    ).exists()
+
+    if already_checked_in:
+        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            return JsonResponse({"ok": False, "reason": "already_checked_in_today"})
+        return redirect("dashboard")
+
+    # Create check-in
     CheckIn.objects.create(profile=profile, gym=gym)
+
+    # Calculation for clients xp gain/control (reset-style leveling)
+    profile.xp += 20
+    while profile.xp >= profile.level * 100:
+        threshold = profile.level * 100
+        profile.xp -= threshold
+        profile.level += 1
+    profile.save()
+
+    # AJAX response
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        xp_next_level = profile.level * 100
+        xp_progress_percent = min(
+            int((profile.xp / xp_next_level) * 100), 100
+        ) if xp_next_level else 0
+
+        return JsonResponse({
+            "ok": True,
+            "level": profile.level,
+            "xp": profile.xp,
+            "xp_next_level": xp_next_level,
+            "xp_progress_percent": xp_progress_percent,
+        })
+
     return redirect("dashboard")
