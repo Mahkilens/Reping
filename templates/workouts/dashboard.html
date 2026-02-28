@@ -1,0 +1,225 @@
+{% extends "base/base.html" %}
+
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+{% endblock %}
+
+{% block body_class %}nav-dashboard{% endblock %}
+{% block page_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="dash">
+  <div class="dash-top-tools">
+    <a class="dash-tool-link dash-tool-leaderboard" href="/leaderboard/" aria-label="Leaderboard">
+      <span class="dash-tool-ico" aria-hidden="true">🏆</span>
+      <span>Leaderboard</span>
+    </a>
+  </div>
+  <header class="card hero">
+    <div class="hero-inner">
+      <div class="hero-top">
+        <div class="brand">
+          <p class="app-title">Reping</p>
+          <h1 class="headline">Show up today. Your future self will thank you.</h1>
+          <p class="subhead">Track your check-ins, build momentum, and keep the streak alive.</p>
+        </div>
+
+        <div class="header-right">
+          <div class="level">
+            <div class="level-top">
+              <div class="level-title" id="levelValue">Level {{ profile.level|default:"1" }}</div>
+              <div class="level-xp" id="xpText">XP {{ profile.xp|default:"0" }} / {{ xp_next_level|default:"100" }}</div>
+            </div>
+            <div class="xp-track" id="xpTrack" style="--xp: {{ xp_progress_percent|default:0 }}%;" aria-hidden="true">
+              <div class="xp-fill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <!-- TODO: wire this to your workout flow -->
+        <a class="btn btn-primary btn-block" href="#">Start Workout</a>
+
+        <form class="checkin-form" id="checkinForm" method="post" action="{% url 'checkin_create' %}">
+          {% csrf_token %}
+          <button class="btn btn-secondary btn-block" type="submit" id="checkinBtn">Check In</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <section class="stats">
+    <div class="card kpi-card">
+      <div class="kpi-top">
+        <div class="kpi">
+          <div class="label">Check-ins Today</div>
+          <div class="value">{{ today_checkins_count }}</div>
+        </div>
+        <div class="kpi-badge">Today</div>
+      </div>
+      <div class="divider" style="margin: 14px 0;"></div>
+      <div class="muted" style="font-size: 13px;">One check-in is a win. Stack them.</div>
+    </div>
+
+    <div class="card kpi-card">
+      <div class="kpi-top">
+        <div class="kpi">
+          <div class="label">Check-ins This Week</div>
+          <div class="value">{{ week_checkins_count }}</div>
+        </div>
+        <div class="kpi-badge">Week</div>
+      </div>
+      <div class="divider" style="margin: 14px 0;"></div>
+      <div class="muted" style="font-size: 13px;">Keep the rhythm—small steps, big results.</div>
+    </div>
+  </section>
+
+  <section class="two-col">
+    <a class="card placeholder clickable-card" href="/streak/" aria-label="Open Streak Calendar">
+      <div class="section-title">Streak Calendar</div>
+      <div class="placeholder-hint">Placeholder: this will show your streak by day.</div>
+
+      <div class="streak-grid" aria-hidden="true">
+  {% for day in calendar_days %}
+    <div class="streak-cell {% if day.checked_in %}on{% endif %}"></div>
+  {% endfor %}
+</div>
+
+    <a class="card placeholder clickable-card" href="/analytics/" aria-label="Open Busy Times">
+      <div class="section-title">Busy Times</div>
+      <div class="placeholder-hint">Placeholder: this will show when you train most.</div>
+
+      <div class="bar-chart" aria-hidden="true">
+        <div class="bar" style="height: 24%;"></div>
+        <div class="bar" style="height: 36%;"></div>
+        <div class="bar" style="height: 52%;"></div>
+        <div class="bar" style="height: 68%;"></div>
+        <div class="bar" style="height: 80%;"></div>
+        <div class="bar" style="height: 60%;"></div>
+        <div class="bar" style="height: 44%;"></div>
+        <div class="bar" style="height: 30%;"></div>
+      </div>
+      <div class="bar-labels" aria-hidden="true">
+        <div>6a</div>
+        <div>8a</div>
+        <div>10a</div>
+        <div>12p</div>
+        <div>2p</div>
+        <div>4p</div>
+        <div>6p</div>
+        <div>8p</div>
+      </div>
+    </a>
+  </section>
+
+  <section class="dash-section">
+    <div class="dash-section-header">
+      <h2>Nutrition</h2>
+      <p class="dash-section-subtitle">Daily macros &amp; hydration at a glance.</p>
+    </div>
+
+    <div class="widget-grid">
+      <a class="widget-card" href="/nutrition/" aria-label="Open Nutrition">
+        <div class="widget-inner">
+          <div class="widget-top">
+            <div class="widget-title">Daily macros</div>
+            <div class="widget-hint">Tap to log meals →</div>
+          </div>
+
+          <div class="divider" style="margin: 12px 0;"></div>
+
+          <div class="macro-list">
+            <div class="macro-row">
+              <div class="macro-label">Calories</div>
+              <div class="macro-value">1200 / 2200</div>
+              <div class="macro-bar"><span style="width:55%"></span></div>
+            </div>
+
+            <div class="macro-row">
+              <div class="macro-label">Protein</div>
+              <div class="macro-value">90g / 160g</div>
+              <div class="macro-bar"><span style="width:56%"></span></div>
+            </div>
+
+            <div class="macro-row">
+              <div class="macro-label">Carbs</div>
+              <div class="macro-value">130g / 220g</div>
+              <div class="macro-bar"><span style="width:59%"></span></div>
+            </div>
+
+            <div class="macro-row">
+              <div class="macro-label">Fats</div>
+              <div class="macro-value">40g / 70g</div>
+              <div class="macro-bar"><span style="width:57%"></span></div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <a class="widget-card" href="/hydration/" aria-label="Open Hydration">
+        <div class="widget-inner">
+          <div class="widget-top">
+            <div class="widget-title">Hydration</div>
+            <div class="widget-hint">Tap to log water →</div>
+          </div>
+
+          <div class="divider" style="margin: 12px 0;"></div>
+
+          <div class="hydration-main">
+            <div class="hydration-value">48oz / 96oz</div>
+            <div class="macro-bar"><span style="width:50%"></span></div>
+            <div class="hydration-sub">Aim to hit your daily goal.</div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  const form = document.getElementById('checkinForm');
+  const btn  = document.getElementById('checkinBtn');
+
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+    btn.disabled = true;
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': csrfToken,
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: new FormData(form),
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data.ok) return;
+
+        var levelEl  = document.getElementById('levelValue');
+        var xpTextEl = document.getElementById('xpText');
+        var xpTrack  = document.getElementById('xpTrack');
+
+        if (levelEl)  levelEl.textContent  = 'Level ' + data.level;
+        if (xpTextEl) xpTextEl.textContent = 'XP ' + data.xp + ' / ' + data.xp_next_level;
+        if (xpTrack)  xpTrack.style.setProperty('--xp', data.xp_progress_percent + '%');
+      })
+      .catch(function () {
+        form.submit();
+      })
+      .finally(function () {
+        btn.disabled = false;
+      });
+  });
+})();
+</script>
+{% endblock %}
