@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+{% endblock %}
+
+{% block body_class %}nav-dashboard{% endblock %}
+{% block page_id %}hydration{% endblock %}
+
+{% block content %}
+<div class="page-shell">
+  <a class="back-link" href="/dashboard/" aria-label="Back to Dashboard">← Back</a>
+  <section class="card page-hero">
+    <h1>Hydration</h1>
+    <p class="page-sub">Log your water intake and hit your daily hydration goal.</p>
+  </section>
+
+  <section class="card page-body">
+    <p>Placeholder — water logging, daily goal tracking, and hydration history will appear here.</p>
+  </section>
+</div>
+{% endblock %}

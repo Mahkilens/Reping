@@ -13,23 +13,53 @@ def dashboard(request):
     profile, _ = Profile.objects.get_or_create(user=request.user)
     recent_sessions = profile.sessions.order_by("-date")[:5]
 
-    # today logic
-    today = date.today()
+    # ===== STREAK LOGIC (Last 30 Days) =====
+    DAYS = 30
+    today = timezone.localdate()
+    start_date = today - timedelta(days=DAYS - 1)
+
+    # Get check-ins in the last 30 days
+    recent_checkins = CheckIn.objects.filter(
+        profile=profile,
+        timestamp_date__date__gte=start_date,
+        timestamp_date__date__lte=today,
+    )
+
+    # Convert check-ins into a set of dates for fast lookup
+    checked_dates = {
+        checkin.timestamp_date.date()
+        for checkin in recent_checkins
+    }
+
+    # Build calendar_days list
+    calendar_days = []
+    for i in reversed(range(DAYS)):
+        day = start_date + timedelta(days=i)
+        calendar_days.append({
+            "date": day,
+            "checked_in": day in checked_dates,
+        })
+
+    # ===== TODAY LOGIC =====
     today_checkins_count = CheckIn.objects.filter(
         profile=profile,
-        timestamp__date=today
+        timestamp_date__date=today
     ).count()
 
-    # week logic (Monday -> today)
+    # ===== WEEK LOGIC =====
     start_of_week = today - timedelta(days=today.weekday())
     week_checkins_count = CheckIn.objects.filter(
         profile=profile,
-        timestamp__date__gte=start_of_week,
-        timestamp__date__lte=today
+        timestamp_date__date__gte=start_of_week,
+        timestamp_date__date__lte=today
     ).count()
 
+    # ===== XP BAR =====
     xp_next_level = profile.level * 100
-    xp_progress_percent = min(int((profile.xp / xp_next_level) * 100), 100) if xp_next_level else 0
+    xp_progress_percent = (
+        min(int((profile.xp / xp_next_level) * 100), 100)
+        if xp_next_level else 0
+    )
 
     return render(
         request,
@@ -41,9 +71,9 @@ def dashboard(request):
             "week_checkins_count": week_checkins_count,
             "xp_next_level": xp_next_level,
             "xp_progress_percent": xp_progress_percent,
+            "calendar_days": calendar_days,  # 👈 NEW
         }
     )
-
 
 def home(request):
     return redirect("dashboard")
@@ -107,7 +137,7 @@ def checkin_create(request):
     today = timezone.localdate()
     already_checked_in = CheckIn.objects.filter(
         profile=profile,
-        timestamp__date=today
+        timestamp_date__date=today
     ).exists()
 
     if already_checked_in:

@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+{% endblock %}
+
+{% block body_class %}nav-dashboard{% endblock %}
+{% block page_id %}streak{% endblock %}
+
+{% block content %}
+<div class="page-shell">
+  <a class="back-link" href="/dashboard/" aria-label="Back to Dashboard">← Back</a>
+  <section class="card page-hero">
+    <h1>Streak Calendar</h1>
+    <p class="page-sub">See your check-in consistency day by day.</p>
+  </section>
+
+  <section class="card page-body">
+    <p>Placeholder — your full streak calendar, longest streaks, and consistency stats will appear here.</p>
+  </section>
+</div>
+{% endblock %}

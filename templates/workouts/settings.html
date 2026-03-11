@@ -1,0 +1,79 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block body_class %}nav-settings{% endblock %}
+{% block page_id %}settings{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/pages.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="settings-wrap">
+
+  <aside class="settings-side card">
+    <div class="settings-side-title">Settings</div>
+
+    <button class="side-link active" data-tab="account">👤 Account</button>
+    <button class="side-link" data-tab="privacy">🔒 Privacy &amp; Security</button>
+    <button class="side-link" data-tab="notifications">🔔 Notifications</button>
+    <button class="side-link" data-tab="appearance">🎨 Appearance</button>
+  </aside>
+
+  <main class="settings-main">
+
+    <section class="settings-panel card active" id="tab-account">
+      <h1 class="panel-title">Account</h1>
+      <p class="panel-sub">Manage account settings and sign out.</p>
+
+      <div class="card widget">
+        <div class="widget-title">Sign out</div>
+        <div class="muted">Sign out of your Reping account on this device.</div>
+
+        <form method="post" action="{% url 'logout' %}" class="widget-actions">
+          {% csrf_token %}
+          <button class="btn danger" type="submit">Log out</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="settings-panel card" id="tab-privacy">
+      <h1 class="panel-title">Privacy &amp; Security</h1>
+      <p class="panel-sub">Security controls live here.</p>
+      <div class="card widget"><div class="muted">Coming soon: password changes, device sessions, and privacy controls.</div></div>
+    </section>
+
+    <section class="settings-panel card" id="tab-notifications">
+      <h1 class="panel-title">Notifications</h1>
+      <p class="panel-sub">Control reminders and alerts.</p>
+      <div class="card widget"><div class="muted">Coming soon: reminders, streak alerts, and goal nudges.</div></div>
+    </section>
+
+    <section class="settings-panel card" id="tab-appearance">
+      <h1 class="panel-title">Appearance</h1>
+      <p class="panel-sub">Theme &amp; layout options.</p>
+      <div class="card widget"><div class="muted">Coming soon: theme mode, contrast, and layout preferences.</div></div>
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+  (function () {
+    var links = document.querySelectorAll(".side-link");
+    var panels = document.querySelectorAll(".settings-panel");
+
+    links.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        links.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+
+        var tab = btn.dataset.tab;
+        panels.forEach(function (p) { p.classList.remove("active"); });
+        document.getElementById("tab-" + tab).classList.add("active");
+      });
+    });
+  })();
+</script>
+{% endblock %}

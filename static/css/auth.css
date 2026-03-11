@@ -1,0 +1,466 @@
+/* ── Auth pages — scoped to .auth-page ───────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #fff;
+  background-color: #070A12;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Background image layer ──────────────────────────────────────────────── */
+
+.auth-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: url("/static/Images/Background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  animation: authFadeIn 3s ease forwards;
+}
+
+.auth-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 10, 18, 0.60) 0%,
+    rgba(6, 10, 18, 0.70) 50%,
+    rgba(6, 10, 18, 0.80) 100%
+  );
+}
+
+@keyframes authFadeIn {
+  to { opacity: 1; }
+}
+
+/* ── Center wrapper ──────────────────────────────────────────────────────── */
+
+.auth-center {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  padding: 24px 16px;
+}
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 20px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.55);
+  padding: 36px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* ── Logo ────────────────────────────────────────────────────────────────── */
+
+.auth-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+
+.auth-logo-icon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 9px;
+}
+
+.auth-logo-text {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+/* ── Headings ────────────────────────────────────────────────────────────── */
+
+.auth-title {
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.auth-sub {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.52);
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+/* ── Form ────────────────────────────────────────────────────────────────── */
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.auth-input::placeholder { color: rgba(255, 255, 255, 0.25); }
+
+.auth-input:focus {
+  border-color: rgba(90, 170, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* ── Error ───────────────────────────────────────────────────────────────── */
+
+.auth-error {
+  font-size: 13px;
+  color: rgba(255, 100, 100, 0.92);
+  background: rgba(255, 60, 60, 0.08);
+  border: 1px solid rgba(255, 60, 60, 0.18);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+/* ── Primary login button ────────────────────────────────────────────────── */
+
+.auth-btn-primary {
+  width: 100%;
+  margin-top: 4px;
+  padding: 13px;
+  border-radius: 999px;
+  border: none;
+  background: #3B82F6;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 160ms ease, opacity 160ms ease, transform 120ms ease;
+}
+
+.auth-btn-primary:hover:not(:disabled) {
+  background: #2563EB;
+  transform: translateY(-1px);
+}
+
+.auth-btn-primary:focus-visible {
+  outline: 2px solid rgba(90, 170, 255, 0.9);
+  outline-offset: 2px;
+}
+
+.auth-btn-primary:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+/* ── Divider ─────────────────────────────────────────────────────────────── */
+
+.auth-divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 18px;
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.10);
+}
+
+/* ── Social buttons ──────────────────────────────────────────────────────── */
+
+.auth-social {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-social-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
+}
+
+.auth-social-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.auth-social-btn:focus-visible {
+  outline: 2px solid rgba(90, 170, 255, 0.9);
+  outline-offset: 2px;
+}
+
+.auth-social-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ── Sign up link ────────────────────────────────────────────────────────── */
+
+.auth-signup {
+  margin-top: 22px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.42);
+  text-align: center;
+}
+
+.auth-signup-link {
+  color: rgba(90, 170, 255, 0.95);
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+  transition: color 160ms ease;
+}
+
+.auth-signup-link:hover { color: #fff; }
+
+/* ── Mobile tweaks ───────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 28px 20px 24px;
+    border-radius: 16px;
+  }
+}
+
+/* ── Settings logout button ──────────────────────────────────────────────── */
+
+.settings-danger-zone {
+  padding: 20px 22px;
+}
+
+.settings-logout-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.settings-logout-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.88);
+  margin-bottom: 3px;
+  letter-spacing: 0.2px;
+}
+
+.settings-logout-sub {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.btn-logout {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 80, 80, 0.30);
+  background: rgba(255, 60, 60, 0.08);
+  color: rgba(255, 120, 120, 0.95);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
+}
+
+.btn-logout:hover {
+  background: rgba(255, 60, 60, 0.16);
+  border-color: rgba(255, 80, 80, 0.50);
+  transform: translateY(-1px);
+}
+
+.btn-logout:focus-visible {
+  outline: 2px solid rgba(255, 100, 100, 0.8);
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .settings-logout-row { flex-direction: column; align-items: flex-start; }
+  .btn-logout { width: 100%; text-align: center; padding: 13px; }
+}
+
+.auth-social form {
+  margin: 0;
+}
+
+.auth-social-btn {
+  width: 100%;
+}
+
+/* ── Apple login button ──────────────────────────────────────────────────── */
+
+.btn-apple {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
+}
+
+.btn-apple:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-apple:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+.btn-apple-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ── Google login button ──────────────────────────────────────────────────── */
+
+.btn-google {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
+}
+
+.btn-google:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-google:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+.btn-google-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ── Facebook login button ──────────────────────────────────────────────────── */
+
+.btn-facebook {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
+}
+
+.btn-facebook:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-facebook:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+.btn-facebook-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}

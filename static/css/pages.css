@@ -1,0 +1,504 @@
+/* ── Keyframes ───────────────────────────────────────────────────────────── */
+
+@keyframes bgFadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes ambientShift {
+  0%   { transform: translate3d(0, 0, 0);    opacity: 0.80; }
+  50%  { transform: translate3d(0, -8px, 0); opacity: 0.92; }
+  100% { transform: translate3d(0, 0, 0);    opacity: 0.80; }
+}
+
+@keyframes goldPulse {
+  0%   { opacity: 0.82; transform: scale(1);    }
+  50%  { opacity: 1.00; transform: scale(1.04); }
+  100% { opacity: 0.82; transform: scale(1);    }
+}
+
+@keyframes goldShift {
+  0%   { background-position: 20% 10%, 80% 20%, center; }
+  33%  { background-position: 35% 20%, 65% 10%, center; }
+  66%  { background-position: 15% 5%,  85% 25%, center; }
+  100% { background-position: 20% 10%, 80% 20%, center; }
+}
+
+@keyframes ambientShiftGold {
+  0%   { transform: translate3d(0, 0, 0)     scale(1);    opacity: 0.80; }
+  50%  { transform: translate3d(0, -10px, 0) scale(1.03); opacity: 0.95; }
+  100% { transform: translate3d(0, 0, 0)     scale(1);    opacity: 0.80; }
+}
+
+/* ── App shell base ──────────────────────────────────────────────────────── */
+
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate;
+}
+
+/* ── ::before — background image layer (fades in) ───────────────────────── */
+
+.app-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: none;
+  background-color: #070A12;
+  opacity: 0;
+  animation: bgFadeIn 3s ease forwards;
+}
+
+/* ── ::after — dark tint overlay ────────────────────────────────────────── */
+
+.app-shell::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 10, 18, 0.55) 0%,
+    rgba(6, 10, 18, 0.62) 45%,
+    rgba(6, 10, 18, 0.70) 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Ambient lights div ──────────────────────────────────────────────────── */
+
+.ambient-lights {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 520px at 15% 10%, rgba(59, 130, 246, 0.10), transparent 60%),
+    radial-gradient(900px 520px at 85% 15%, rgba(34, 197, 94, 0.08), transparent 62%);
+  opacity: 0.85;
+  animation: ambientShift 14s ease-in-out infinite;
+}
+
+/* ── Dashboard ───────────────────────────────────────────────────────────── */
+
+.app-shell[data-page="dashboard"]::before {
+  background-image: url("/static/Images/Background.png");
+  background-color: transparent;
+}
+
+/* ── Leaderboard — gold animated background ──────────────────────────────── */
+
+.app-shell[data-page="leaderboard"]::before {
+  background-image:
+    radial-gradient(ellipse 900px 500px at 20% 10%, rgba(255, 200, 30, 0.22), transparent 58%),
+    radial-gradient(ellipse 900px 500px at 80% 20%, rgba(255, 160, 0,  0.16), transparent 58%),
+    radial-gradient(ellipse 700px 400px at 50% 80%, rgba(180, 100, 0,  0.12), transparent 60%),
+    linear-gradient(180deg, #0A0700 0%, #070A12 100%);
+  background-color: transparent;
+  background-size: 200% 200%;
+  animation: bgFadeIn 3s ease forwards, goldShift 18s ease-in-out infinite;
+}
+
+.app-shell[data-page="leaderboard"] .ambient-lights {
+  background:
+    radial-gradient(900px 520px at 15% 10%, rgba(255, 200, 30, 0.14), transparent 60%),
+    radial-gradient(900px 520px at 85% 15%, rgba(255, 140, 0,  0.10), transparent 62%);
+  animation: ambientShiftGold 16s ease-in-out infinite;
+}
+
+/* ── Dashboard — gold ambient overlay ───────────────────────────────────── */
+
+.app-shell[data-page="dashboard"] .ambient-lights {
+  background:
+    radial-gradient(900px 520px at 15% 10%, rgba(255, 195, 20, 0.09), transparent 60%),
+    radial-gradient(900px 520px at 85% 15%, rgba(255, 140, 0,  0.07), transparent 62%);
+  animation: ambientShiftGold 18s ease-in-out infinite;
+}
+
+/* ── Nav pages — desktop images ─────────────────────────────────────────── */
+
+.app-shell[data-page="logs"]::before {
+  background-image: url("/static/Images/Logs_Desktop.png");
+  background-color: transparent;
+}
+.app-shell[data-page="exercises"]::before {
+  background-image: url("/static/Images/Exercise_Desktop.png");
+  background-color: transparent;
+}
+.app-shell[data-page="progress"]::before {
+  background-image: url("/static/Images/Progress_Desktop.png");
+  background-color: transparent;
+}
+.app-shell[data-page="settings"]::before {
+  background-image: url("/static/Images/Settings_Desktop.png");
+  background-color: transparent;
+}
+
+/* ── Nav pages — mobile images ──────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .app-shell[data-page="logs"]::before {
+    background-image: url("/static/Images/Logs_Mobile.png");
+  }
+  .app-shell[data-page="exercises"]::before {
+    background-image: url("/static/Images/Exercise_Mobile.png");
+  }
+  .app-shell[data-page="progress"]::before {
+    background-image: url("/static/Images/Progress_Mobile.png");
+  }
+  .app-shell[data-page="settings"]::before {
+    background-image: url("/static/Images/Settings_Mobile.png");
+  }
+}
+
+/* ── Widget pages — gradient backgrounds ────────────────────────────────── */
+
+.app-shell[data-page="nutrition"]::before {
+  background-image:
+    radial-gradient(900px 420px at 20% 0%, rgba(59, 130, 246, 0.28), transparent 60%),
+    radial-gradient(900px 420px at 80% 10%, rgba(34, 197, 94, 0.20), transparent 60%),
+    linear-gradient(180deg, #070A12 0%, #05070d 100%);
+  background-color: transparent;
+}
+.app-shell[data-page="hydration"]::before {
+  background-image:
+    radial-gradient(900px 420px at 10% 0%, rgba(34, 197, 94, 0.28), transparent 60%),
+    radial-gradient(900px 420px at 85% 15%, rgba(59, 130, 246, 0.18), transparent 60%),
+    linear-gradient(180deg, #060C0A 0%, #05070d 100%);
+  background-color: transparent;
+}
+.app-shell[data-page="streak"]::before {
+  background-image:
+    radial-gradient(900px 420px at 50% 0%, rgba(251, 191, 36, 0.22), transparent 60%),
+    radial-gradient(900px 420px at 10% 20%, rgba(249, 115, 22, 0.18), transparent 60%),
+    linear-gradient(180deg, #0A0804 0%, #05070d 100%);
+  background-color: transparent;
+}
+.app-shell[data-page="analytics"]::before {
+  background-image:
+    radial-gradient(900px 420px at 80% 0%, rgba(168, 85, 247, 0.24), transparent 60%),
+    radial-gradient(900px 420px at 15% 10%, rgba(59, 130, 246, 0.18), transparent 60%),
+    linear-gradient(180deg, #080610 0%, #05070d 100%);
+  background-color: transparent;
+}
+
+/* ── Accessibility: reduced motion ──────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell::before {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+  .ambient-lights {
+    animation: none !important;
+  }
+}
+
+/* ── Page shell layout ───────────────────────────────────────────────────── */
+
+.page-shell {
+  display: grid;
+  gap: 16px;
+}
+
+/* ── Back link ───────────────────────────────────────────────────────────── */
+
+.back-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+
+  padding: 6px 10px;
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  transition: 
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 120ms ease;
+}
+
+.back-link:hover{
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.95);
+  transform: translateY(-1px);
+}
+
+.back-link:focus-visible{
+  outline: 2px solid rgba(90,170,255,0.9);
+  outline-offset: 2px;
+}
+
+/* Hidden on desktop, shown on mobile/tablet only */
+.back-link--mobile-only {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .back-link--mobile-only {
+    display: inline-flex;
+  }
+}
+
+/* ── Page hero card ──────────────────────────────────────────────────────── */
+
+.page-hero {
+  padding: 28px 22px;
+  display: grid;
+  gap: 8px;
+}
+
+.page-hero h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 850;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.page-hero .page-sub {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── Page body card ──────────────────────────────────────────────────────── */
+
+.page-body {
+  padding: 22px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (min-width: 780px) {
+  .page-hero {
+    padding: 36px 28px;
+  }
+
+  .page-hero h1 {
+    font-size: 38px;
+  }
+}
+
+/* ── Settings layout ─────────────────────────────────────────────────────── */
+
+.settings-wrap {
+  width: min(1100px, 92vw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 22px;
+  padding: 28px 0 60px;
+}
+
+.settings-side {
+  padding: 18px;
+  height: fit-content;
+  position: sticky;
+  top: 92px;
+}
+
+.settings-side-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 14px;
+}
+
+.side-link {
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: transform 150ms ease, border-color 150ms ease, background 150ms ease;
+}
+
+.side-link:hover {
+  transform: translateY(-1px);
+  border-color: rgba(90, 170, 255, 0.35);
+  background: rgba(90, 170, 255, 0.06);
+}
+
+.side-link.active {
+  border-color: rgba(90, 170, 255, 0.55);
+  background: rgba(90, 170, 255, 0.10);
+  box-shadow: 0 0 0 1px rgba(90, 170, 255, 0.12);
+}
+
+.side-link:focus-visible {
+  outline: 2px solid rgba(90, 170, 255, 0.9);
+  outline-offset: 2px;
+}
+
+.settings-main {
+  min-width: 0;
+}
+
+.settings-panel {
+  display: none;
+  padding: 24px;
+}
+
+.settings-panel.active {
+  display: block;
+}
+
+/* ── Panel typography ────────────────────────────────────────────────────── */
+
+.panel-title {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 0 0 8px;
+  color: #fff;
+}
+
+.panel-sub {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.50);
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+
+/* ── Widget cards inside panels ──────────────────────────────────────────── */
+
+.widget {
+  padding: 20px 22px;
+  margin-top: 14px;
+}
+
+.widget-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.90);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+.widget-actions {
+  margin-top: 16px;
+}
+
+.muted {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.42);
+  line-height: 1.55;
+}
+
+/* ── Settings buttons ────────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.btn:focus-visible {
+  outline: 2px solid rgba(90, 170, 255, 0.9);
+  outline-offset: 2px;
+}
+
+.btn.danger {
+  border-color: rgba(255, 90, 90, 0.25);
+  background: rgba(255, 90, 90, 0.10);
+  color: rgba(255, 140, 140, 0.95);
+}
+
+.btn.danger:hover {
+  border-color: rgba(255, 90, 90, 0.45);
+  box-shadow: 0 12px 30px rgba(255, 90, 90, 0.10), 0 18px 40px rgba(0, 0, 0, 0.40);
+}
+
+/* ── Settings mobile: horizontal pill tabs ───────────────────────────────── */
+
+@media (max-width: 860px) {
+  .settings-wrap {
+    grid-template-columns: 1fr;
+    width: 100%;
+    gap: 14px;
+    padding: 18px 0 60px;
+  }
+
+  .settings-side {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 12px 14px;
+    scrollbar-width: none;
+  }
+
+  .settings-side::-webkit-scrollbar { display: none; }
+
+  .settings-side-title { display: none; }
+
+  .side-link {
+    white-space: nowrap;
+    margin-bottom: 0;
+    flex: 0 0 auto;
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+  }
+
+  .settings-panel {
+    padding: 18px;
+  }
+
+  .panel-title { font-size: 34px; }
+
+  .btn {
+    width: 100%;
+    padding: 13px;
+  }
+}

@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+{% endblock %}
+
+{% block body_class %}nav-dashboard{% endblock %}
+{% block page_id %}analytics{% endblock %}
+
+{% block content %}
+<div class="page-shell">
+  <a class="back-link" href="/dashboard/" aria-label="Back to Dashboard">← Back</a>
+  <section class="card page-hero">
+    <h1>Analytics</h1>
+    <p class="page-sub">Understand when and how you train most.</p>
+  </section>
+
+  <section class="card page-body">
+    <p>Placeholder — busy times heatmap, training frequency charts, and performance trends will appear here.</p>
+  </section>
+</div>
+{% endblock %}

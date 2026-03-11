@@ -1,0 +1,22 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+{% endblock %}
+
+{% block body_class %}nav-logs{% endblock %}
+{% block page_id %}logs{% endblock %}
+
+{% block content %}
+<div class="page-shell">
+  <section class="card page-hero">
+    <h1>Logs</h1>
+    <p class="page-sub">Placeholder — this page will show your workout logs.</p>
+  </section>
+
+  <section class="card page-body">
+    <p>Your training history will appear here. Log sets, reps, and notes for every session.</p>
+  </section>
+</div>
+{% endblock %}

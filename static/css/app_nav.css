@@ -1,0 +1,244 @@
+/* ── App Navigation ─────────────────────────────────────────────────────── */
+
+/* ── Desktop header nav ─────────────────────────────────────────────────── */
+.app-header {
+  display: none; /* hidden on mobile */
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  width: 100%;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(10, 12, 20, 0.72);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.40);
+}
+
+.app-header-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.app-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.app-logo-icon {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 10px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.app-logo-text {
+  font-size: 19px;
+  font-weight: 850;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+.nav-ico {
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.9;
+  margin-right: 4px;
+}
+
+/* ── Leaderboard gold shimmer (desktop nav) ──────────────────────────────── */
+
+.leaderboard-link {
+  position: relative;
+  overflow: hidden;
+}
+
+.leaderboard-link::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 215, 0, 0) 0%,
+    rgba(255, 215, 0, 0.18) 35%,
+    rgba(255, 215, 0, 0.42) 50%,
+    rgba(255, 215, 0, 0.18) 65%,
+    rgba(255, 215, 0, 0) 100%
+  );
+  transform: translateX(-120%);
+  transition: transform 520ms ease;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.leaderboard-link:hover::after {
+  transform: translateX(120%);
+}
+
+.leaderboard-link:hover {
+  border-color: rgba(255, 215, 0, 0.28);
+  box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.10), 0 14px 40px rgba(0, 0, 0, 0.32);
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  padding: 4px 6px;
+}
+
+.header-nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.60);
+  text-decoration: none;
+  transition: color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+  white-space: nowrap;
+}
+
+.header-nav-item:hover {
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.header-nav-item:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.80);
+  outline-offset: 2px;
+}
+
+/* Active state — driven by data-active on the page wrapper */
+.page[data-active="dashboard"] ~ * .header-nav-item[data-nav="dashboard"],
+.page-shell[data-active="dashboard"] ~ * .header-nav-item[data-nav="dashboard"],
+.dash[data-active="dashboard"] ~ * .header-nav-item[data-nav="dashboard"] { color: #fff; background: rgba(59,130,246,0.22); box-shadow: 0 0 0 1px rgba(59,130,246,0.30); }
+
+/* Simpler approach: use body class set by each page template */
+body.nav-dashboard .header-nav-item[data-nav="dashboard"],
+body.nav-logs     .header-nav-item[data-nav="logs"],
+body.nav-exercises .header-nav-item[data-nav="exercises"],
+body.nav-progress  .header-nav-item[data-nav="progress"],
+body.nav-settings  .header-nav-item[data-nav="settings"] {
+  color: #fff;
+  background: rgba(59, 130, 246, 0.22);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.30);
+}
+
+/* ── Mobile bottom tab bar ───────────────────────────────────────────────── */
+.tabbar {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  height: calc(60px + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(10, 12, 20, 0.82);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.40);
+  align-items: stretch;
+  justify-content: space-around;
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px 4px;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  transition: color 160ms ease;
+  min-width: 0;
+}
+
+.tab-item:hover {
+  color: rgba(255, 255, 255, 0.80);
+}
+
+.tab-item:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.80);
+  outline-offset: -2px;
+  border-radius: 12px;
+}
+
+.tab-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.tab-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Active tab states */
+body.nav-dashboard .tab-item[data-nav="dashboard"],
+body.nav-logs      .tab-item[data-nav="logs"],
+body.nav-exercises .tab-item[data-nav="exercises"],
+body.nav-progress  .tab-item[data-nav="progress"],
+body.nav-settings  .tab-item[data-nav="settings"] {
+  color: #3B82F6;
+}
+
+body.nav-dashboard .tab-item[data-nav="dashboard"] .tab-icon,
+body.nav-logs      .tab-item[data-nav="logs"]      .tab-icon,
+body.nav-exercises .tab-item[data-nav="exercises"] .tab-icon,
+body.nav-progress  .tab-item[data-nav="progress"]  .tab-icon,
+body.nav-settings  .tab-item[data-nav="settings"]  .tab-icon {
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.60));
+  transform: translateY(-2px);
+}
+
+/* ── Content spacing ─────────────────────────────────────────────────────── */
+
+/* Mobile: push content above tab bar */
+.app-shell {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+}
+
+/* ── Desktop breakpoint ──────────────────────────────────────────────────── */
+@media (min-width: 900px) {
+  .app-header {
+    display: block;
+  }
+
+  .tabbar {
+    display: none;
+  }
+
+  /* Restore normal bottom padding on desktop */
+  .app-shell {
+    padding-bottom: 56px !important;
+    padding-top: 24px !important;
+  }
+}

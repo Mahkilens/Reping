@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+{% endblock %}
+
+{% block body_class %}nav-leaderboard{% endblock %}
+{% block page_id %}leaderboard{% endblock %}
+
+{% block content %}
+<div class="page-shell">
+  <a class="back-link back-link--mobile-only" href="/dashboard/" aria-label="Back to Dashboard">← Back</a>
+  <section class="card page-hero">
+    <h1>🏆 Leaderboard</h1>
+    <p class="page-sub">See how you stack up against other Reping members.</p>
+  </section>
+
+  <section class="card page-body">
+    <p>Placeholder — rankings, streaks, and check-in counts will appear here.</p>
+  </section>
+</div>
+{% endblock %}

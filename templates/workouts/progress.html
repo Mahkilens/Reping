@@ -1,0 +1,22 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+{% endblock %}
+
+{% block body_class %}nav-progress{% endblock %}
+{% block page_id %}progress{% endblock %}
+
+{% block content %}
+<div class="page-shell">
+  <section class="card page-hero">
+    <h1>Progress</h1>
+    <p class="page-sub">Placeholder — this page will show your progress over time.</p>
+  </section>
+
+  <section class="card page-body">
+    <p>Charts, personal records, and body metrics will live here. Track your gains week over week.</p>
+  </section>
+</div>
+{% endblock %}

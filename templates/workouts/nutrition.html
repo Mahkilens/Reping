@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+{% endblock %}
+
+{% block body_class %}nav-dashboard{% endblock %}
+{% block page_id %}nutrition{% endblock %}
+
+{% block content %}
+<div class="page-shell">
+  <a class="back-link" href="/dashboard/" aria-label="Back to Dashboard">← Back</a>
+  <section class="card page-hero">
+    <h1>Nutrition</h1>
+    <p class="page-sub">Track your daily macros, calories, and meal logs.</p>
+  </section>
+
+  <section class="card page-body">
+    <p>Placeholder — meal logging, macro breakdowns, and nutrition history will appear here.</p>
+  </section>
+</div>
+{% endblock %}

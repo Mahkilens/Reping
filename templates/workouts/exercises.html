@@ -1,0 +1,22 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}" />
+{% endblock %}
+
+{% block body_class %}nav-exercises{% endblock %}
+{% block page_id %}exercises{% endblock %}
+
+{% block content %}
+<div class="page-shell">
+  <section class="card page-hero">
+    <h1>Exercises</h1>
+    <p class="page-sub">Placeholder — this page will show your exercise library.</p>
+  </section>
+
+  <section class="card page-body">
+    <p>Browse and search exercises. Filter by muscle group, equipment, or movement pattern.</p>
+  </section>
+</div>
+{% endblock %}
